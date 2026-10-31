@@ -1,0 +1,18 @@
+{
+  "name": "canva-clinical-visualizer",
+  "version": "1.0.0",
+  "description": "Canva Apps SDK extension for evidence-based medical visualizations.",
+  "main": "src/App.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Milind Chatrabhuji",
+  "license": "Commercial",
+  "dependencies": {
+    "@canva/design-interaction-api": "^1.2.0",
+    "@canva/user-interface-kit": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

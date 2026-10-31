@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Clinical & Scientific Medical Infographics</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #FFFFFF; color: #1E293B; font-size: 12px; display: flex; flex-direction: column; height: 100vh; }
+    .tabs { display: flex; border-bottom: 1px solid #E2E8F0; background: #F8FAFC; }
+    .tab-btn { flex: 1; padding: 10px 8px; border: none; background: transparent; font-size: 11px; font-weight: 600; color: #64748B; cursor: pointer; text-align: center; }
+    .tab-btn.active { color: #0284C7; border-bottom: 2px solid #0284C7; background: #FFFFFF; }
+    .content { flex: 1; padding: 14px; overflow-y: auto; display: none; }
+    .content.active { display: block; }
+    h3 { font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 8px; }
+    p.desc { font-size: 11px; color: #64748B; margin-bottom: 12px; line-height: 1.4; }
+    .field { margin-bottom: 10px; }
+    label { display: block; font-weight: 600; font-size: 11px; color: #334155; margin-bottom: 4px; }
+    select, input { width: 100%; padding: 7px 9px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 11px; color: #0F172A; }
+    select:focus, input:focus { border-color: #0284C7; outline: none; }
+    .btn-action { width: 100%; background: #0284C7; color: #FFFFFF; border: none; padding: 9px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; margin-top: 8px; }
+    .btn-action:hover { background: #0369A1; }
+    .badge-preview { background: #F1F5F9; border-radius: 6px; padding: 10px; margin-top: 8px; border: 1px solid #E2E8F0; }
+    .footer-pro { padding: 10px; background: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center; font-size: 10px; color: #64748B; }
+    .pro-pill { background: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left: 4px; }
+  </style>
+</head>
+<body>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('lab')">Lab Ranges</button>
+    <button class="tab-btn" onclick="switchTab('ecg')">ECG Rhythm</button>
+    <button class="tab-btn" onclick="switchTab('palette')">Palettes</button>
+    <button class="tab-btn" onclick="switchTab('license')">Pro Unlock</button>
+  </div>
+
+  <!-- TAB 1: Clinical Lab Ranges -->
+  <div id="tab-lab" class="content active">
+    <h3>Clinical Lab Range Synthesizer</h3>
+    <p class="desc">Evidence-based clinical pathology reference markers with automated normal/pathological needle indicator.</p>
+
+    <div class="field">
+      <label>Laboratory Test Preset</label>
+      <select id="labPreset" onchange="applyLabPreset()">
+        <option value="hb">Hemoglobin (Hb) [Hematology]</option>
+        <option value="fbg">Fasting Blood Glucose (FBG) [Endocrinology]</option>
+        <option value="cr">Serum Creatinine [Nephrology]</option>
+        <option value="trop">Cardiac Troponin-I (hs-cTnI) [Cardiology]</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Test Name</label>
+      <input type="text" id="labName" value="Hemoglobin (Hb)">
+    </div>
+
+    <div style="display: flex; gap: 8px;">
+      <div class="field" style="flex: 1;">
+        <label>Patient Value</label>
+        <input type="number" id="labValue" step="0.1" value="14.2">
+      </div>
+      <div class="field" style="flex: 1;">
+        <label>Unit</label>
+        <input type="text" id="labUnit" value="g/dL">
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 8px;">
+      <div class="field" style="flex: 1;">
+        <label>Normal Min</label>
+        <input type="number" id="labMin" step="0.1" value="13.8">
+      </div>
+      <div class="field" style="flex: 1;">
+        <label>Normal Max</label>
+        <input type="number" id="labMax" step="0.1" value="17.2">
+      </div>
+    </div>
+
+    <button class="btn-action" onclick="generateLabRange()">Insert Lab Graphic onto Canvas</button>
+  </div>
+
+  <!-- TAB 2: ECG Waveform Generator -->
+  <div id="tab-ecg" class="content">
+    <h3>ECG Rhythm Strip Generator</h3>
+    <p class="desc">Parametric vector P-QRS-T electrocardiogram waveform tracing. Ready for patient monitors and clinical posters.</p>
+
+    <div class="field">
+      <label>Cardiac Rhythm Pattern</label>
+      <select id="ecgPattern">
+        <option value="Normal Sinus Rhythm">Normal Sinus Rhythm (NSR)</option>
+        <option value="Sinus Bradycardia">Sinus Bradycardia (Rate &lt; 60 bpm)</option>
+        <option value="Sinus Tachycardia">Sinus Tachycardia (Rate &gt; 100 bpm)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Heart Rate (BPM)</label>
+      <input type="number" id="ecgRate" value="72" min="40" max="180">
+    </div>
+
+    <div class="field">
+      <label>QRS Voltage Amplitude (mV)</label>
+      <input type="number" id="ecgAmp" value="1.2" step="0.1" min="0.5" max="3.0">
+    </div>
+
+    <button class="btn-action" style="background: #10B981;" onclick="generateEcgWave()">Generate ECG Waveform Vector</button>
+  </div>
+
+  <!-- TAB 3: Clinical Palettes -->
+  <div id="tab-palette" class="content">
+    <h3>WCAG AAA Clinical Triage Palette</h3>
+    <p class="desc">Standardized medical color system compliant with emergency department triage and accessible design.</p>
+    <div class="badge-preview">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #DC2626;"></div>
+        <span><strong>Resuscitation Red</strong> (#DC2626) - Immediate</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #EA580C;"></div>
+        <span><strong>Emergent Orange</strong> (#EA580C) - Critical</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #059669;"></div>
+        <span><strong>Stable Green</strong> (#059669) - Normal</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 16px; height: 16px; border-radius: 4px; background: #0284C7;"></div>
+        <span><strong>Observation Cyan</strong> (#0284C7) - Diagnostic</span>
+      </div>
+    </div>
+    <button class="btn-action" style="background: #6366F1; margin-top: 14px;" onclick="generatePalette()">Insert Palette Swatches</button>
+  </div>
+
+  <!-- TAB 4: Pro License -->
+  <div id="tab-license" class="content">
+    <h3>Commercial License Activation</h3>
+    <p class="desc">Upgrade to Commercial Pro ($9 Single / $19 Master Suite) for unrestricted vector generation and client export.</p>
+    <div class="field">
+      <label>License Key</label>
+      <input type="text" id="licenseKey" placeholder="PRO-MED-XXXX-XXXX-XXXX">
+    </div>
+    <button class="btn-action" style="background: #0284C7;" onclick="verifyKey()">Activate Commercial License</button>
+    <div id="licStatus" style="margin-top: 10px; font-weight: 600; text-align: center;"></div>
+  </div>
+
+  <div class="footer-pro">
+    Clinical Medical Infographics v1.0.0 &bull; <span class="pro-pill">PRO READY</span>
+  </div>
+
+  <script>
+    function switchTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    const presets = {
+      hb: { name: "Hemoglobin (Hb)", val: 14.2, unit: "g/dL", min: 13.8, max: 17.2 },
+      fbg: { name: "Fasting Blood Glucose", val: 92, unit: "mg/dL", min: 70, max: 99 },
+      cr: { name: "Serum Creatinine", val: 0.95, unit: "mg/dL", min: 0.70, max: 1.30 },
+      trop: { name: "Cardiac Troponin-I", val: 8.5, unit: "ng/L", min: 0.0, max: 14.0 }
+    };
+
+    function applyLabPreset() {
+      const p = presets[document.getElementById('labPreset').value];
+      document.getElementById('labName').value = p.name;
+      document.getElementById('labValue').value = p.val;
+      document.getElementById('labUnit').value = p.unit;
+      document.getElementById('labMin').value = p.min;
+      document.getElementById('labMax').value = p.max;
+    }
+
+    function generateLabRange() {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'insert-lab-range',
+          payload: {
+            testName: document.getElementById('labName').value,
+            patientValue: parseFloat(document.getElementById('labValue').value),
+            unit: document.getElementById('labUnit').value,
+            minNormal: parseFloat(document.getElementById('labMin').value),
+            maxNormal: parseFloat(document.getElementById('labMax').value)
+          }
+        }
+      }, '*');
+    }
+
+    function generateEcgWave() {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'insert-ecg-wave',
+          payload: {
+            rhythm: document.getElementById('ecgPattern').value,
+            heartRate: parseInt(document.getElementById('ecgRate').value, 10),
+            amplitudeMv: parseFloat(document.getElementById('ecgAmp').value),
+            sampleCount: 120
+          }
+        }
+      }, '*');
+    }
+
+    function generatePalette() {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'insert-palette',
+          payload: [
+            { name: "Resuscitation Red", hex: "#DC2626", r: 0.86, g: 0.15, b: 0.15, role: "Immediate Resuscitation" },
+            { name: "Emergent Orange", hex: "#EA580C", r: 0.92, g: 0.35, b: 0.05, role: "High-Priority Emergency" },
+            { name: "Stable Green", hex: "#059669", r: 0.02, g: 0.59, b: 0.41, role: "Normal / Healthy Baseline" },
+            { name: "Observation Cyan", hex: "#0284C7", r: 0.01, g: 0.52, b: 0.78, role: "Laboratory Observation" },
+            { name: "Clinical Slate", hex: "#1E293B", r: 0.12, g: 0.16, b: 0.23, role: "High-Contrast Typography" }
+          ]
+        }
+      }, '*');
+    }
+
+    function verifyKey() {
+      const k = document.getElementById('licenseKey').value.trim();
+      const st = document.getElementById('licStatus');
+      if (k.startsWith("PRO-") && k.length >= 12) {
+        st.style.color = "#059669";
+        st.innerHTML = "&check; Commercial Pro License Verified!";
+      } else {
+        st.style.color = "#DC2626";
+        st.innerHTML = "Invalid key format. Enter your Gumroad/PayPal key.";
+      }
+    }
+  </script>
+</body>
+</html>

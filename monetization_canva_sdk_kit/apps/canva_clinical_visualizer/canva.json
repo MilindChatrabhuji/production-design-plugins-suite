@@ -1,0 +1,11 @@
+{
+  "app_id": "app_clinical_visualizer_v1",
+  "name": "Clinical & Scientific Visualizer",
+  "description": "Evidence-based medical chart graphics, lab range badges, and vital sign indicators for Canva slides and social presentations.",
+  "version": "1.0.0",
+  "scopes": [
+    "canva:design:content:read",
+    "canva:design:content:write"
+  ],
+  "entrypoint": "dist/index.html"
+}

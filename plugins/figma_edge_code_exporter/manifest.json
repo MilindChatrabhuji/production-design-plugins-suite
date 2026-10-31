@@ -1,0 +1,11 @@
+{
+  "name": "Edge UI Tokens & Responsive Code Exporter",
+  "id": "1394857291049",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}

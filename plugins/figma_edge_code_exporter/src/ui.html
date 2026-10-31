@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edge UI Tokens & Code Exporter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #0F172A; color: #E2E8F0; font-size: 12px; display: flex; flex-direction: column; height: 100vh; }
+    .header { padding: 12px; background: #1E293B; border-bottom: 1px solid #334155; }
+    h2 { font-size: 13px; font-weight: 700; color: #38BDF8; }
+    p.desc { font-size: 11px; color: #94A3B8; }
+    .content { flex: 1; padding: 14px; overflow-y: auto; }
+    .code-box { background: #020617; border: 1px solid #1E293B; border-radius: 6px; padding: 10px; font-family: monospace; font-size: 11px; color: #38BDF8; margin-bottom: 12px; word-break: break-all; white-space: pre-wrap; }
+    .btn { background: #0284C7; color: #FFFFFF; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer; width: 100%; margin-bottom: 8px; }
+    .btn:hover { background: #0369A1; }
+    .btn-secondary { background: #334155; color: #F8FAFC; }
+    .btn-secondary:hover { background: #475569; }
+    label { font-size: 11px; font-weight: 600; color: #94A3B8; margin-bottom: 4px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Edge UI Tokens &amp; Code Exporter</h2>
+    <p class="desc">Select any Figma frame or layer to inspect tokens and JSX.</p>
+  </div>
+
+  <div class="content">
+    <div id="selectionStatus">
+      <label>Tailwind CSS v4 Utility Classes</label>
+      <div class="code-box" id="tailwindOut">Select a layer to extract classes...</div>
+
+      <label>React / Next.js Component JSX</label>
+      <div class="code-box" id="jsxOut">&lt;div&gt;Select a layer...&lt;/div&gt;</div>
+
+      <label>CSS Variables Design Tokens</label>
+      <div class="code-box" id="cssVarsOut">/* Design tokens */</div>
+    </div>
+
+    <button class="btn" onclick="copyTailwind()">Copy Tailwind Classes</button>
+    <button class="btn btn-secondary" onclick="generateResponsiveArtboards()">Create Responsive Breakpoints (375px / 768px / 1440px)</button>
+  </div>
+
+  <script>
+    let currentTailwind = "";
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (msg.type === "selection-data") {
+        currentTailwind = msg.payload.tailwind;
+        document.getElementById('tailwindOut').innerText = msg.payload.tailwind;
+        document.getElementById('jsxOut').innerText = msg.payload.jsx;
+        document.getElementById('cssVarsOut').innerText = JSON.stringify(msg.payload.cssVars, null, 2);
+      } else if (msg.type === "no-selection") {
+        document.getElementById('tailwindOut').innerText = "Select a layer in Figma canvas...";
+        document.getElementById('jsxOut').innerText = "No selection";
+        document.getElementById('cssVarsOut').innerText = "No selection";
+      }
+    };
+
+    function copyTailwind() {
+      navigator.clipboard.writeText(currentTailwind);
+      alert("Copied Tailwind CSS classes to clipboard!");
+    }
+
+    function generateResponsiveArtboards() {
+      parent.postMessage({ pluginMessage: { type: 'create-responsive-artboards' } }, '*');
+    }
+  </script>
+</body>
+</html>
